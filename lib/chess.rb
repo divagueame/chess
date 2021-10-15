@@ -42,12 +42,13 @@ newgame = Game.new
 newgame.board.drawBoard
 # p newgame.board.currentPieces[8]
 
-whiteHorse = newgame.board.currentPieces[26]
-p whiteHorse
+# whiteHorse = newgame.board.currentPieces[26]
+# p whiteHorse
+# whiteHorse.getMoves(newgame.board)
 
-whiteHorse.getMoves(newgame.board)
-
-
+whiteBishop =  newgame.board.currentPieces[13]
+# p whiteBishop
+whiteBishop.getMoves(newgame.board)
 
 # firstPawn.getMoves(newgame.board)
 # firstRook = newgame.board.currentPieces[8]

@@ -70,26 +70,53 @@ module Pieces
               arr << [checkRow,checkCol]
             end
           end
-
         end
-
-        
-
-
-
-        # p "Inside?"
-      # p(currentBoard.isInsideOfBoard(selfRow-2,selfCol+1))
-      # p "exist obj and different color?"
-      # p (currentBoard.retrievePieceObj([selfRow-2,selfCol+1]).nil? )
-      # &&
-        # currentBoard.retrievePieceObj([selfRow-2,selfCol+1]).color != self.color)
-      # p (currentBoard.retrievePieceObj([selfRow+2,selfCol+1]).color != self.color)
-
-      
-
       end
       
-
+      
+    when "Bishop"
+      p "It's a bishop"
+      p self
+      selfCol = self.col
+      selfRow = self.row
+      # bishopCombinations = [1,1]
+      # TOP RIGHT
+      # p "Current, ", [selfRow,selfCol]
+      7.times do |i|
+        # break if selfRow+i+1<0
+        rowDirection = selfRow-i-1
+        colDirection = selfCol+i+1
+        break if rowDirection<0 || colDirection>7
+        p "Top right", [rowDirection,colDirection]
+        # p "Top right", [selfRow-i-1,selfCol+i+1]
+        # p currentBoard.retrievePieceObj([rowDirection,colDirection]).nil?
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+        #if empty, add to array and continue
+        #if not empty, check if same color and break. Add if opposite
+        
+      end
+      # TOP LEFT
+      7.times do |i|
+        # p "Top left", [selfRow-i-1,selfCol-i-1]
+      end
+      # DOWN RIGHT
+      
+      7.times do |i|
+        # p "Down right", [selfRow+i+1,selfCol+i+1]
+      end
+      # DOWN LEFT
+      
+      7.times do |i|
+        # p "Down left", [selfRow+i+1,selfCol-i-1]
+      end
     else
       p "not a pawn"
     end
@@ -163,7 +190,7 @@ end
       @color = color
       @isKing=false
       color=="white"? @pieceStr = '♞': @pieceStr = '♘'
-      # @allowedMoves = getMoves("horse")
+      @allowedMoves = []
     end
   end
 
@@ -177,7 +204,7 @@ end
       @color = color
       @isKing=false
       color=="white"? @pieceStr = '♝': @pieceStr = '♗'
-      # @allowedMoves = getMoves("bishop")
+      @allowedMoves = []
     end
   end
 
