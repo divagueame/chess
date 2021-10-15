@@ -5,7 +5,7 @@ class Board
   def initialize
       @currentPieces =[
         # White pieces
-        Pawn.new(6,0,"white"),
+        Pawn.new(3,0,"white"),
         Pawn.new(6,1,"white"),
         Pawn.new(6,2,"white"),
         Pawn.new(6,3,"white"),
@@ -23,6 +23,7 @@ class Board
         King.new(7,4,"white"),
         
         # black pieces
+        # Pawn.new(5,2,"black"),
         Pawn.new(1,0,"black"),
         Pawn.new(1,1,"black"),
         Pawn.new(1,2,"black"),
@@ -125,8 +126,8 @@ class Board
   end
 
   def retrievePieceObj(origin)
+    return nil if (!origin)
     currentPiece = currentPieces.select{|piece| piece.row==origin[0]&&piece.col==origin[1]}
-    # p currentPiece.color
     currentPiece[0]
   end
 
@@ -134,6 +135,29 @@ class Board
     return false if !targetObj || !targetObj.isKing
     true
   end
+
+  def findDiagonalPiecesofPawn(pawnObj)
+    arr = []
+    return p "Not a pawn" if pawnObj.class.to_s != "Pawn"
+        
+    if pawnObj.color=="white" then
+      diagonalLeftPos = [(pawnObj.row) -1,(pawnObj.col)-1]
+      diagonalRightPos = [(pawnObj.row) -1,(pawnObj.col)+1]
+    else 
+      diagonalLeftPos = [(pawnObj.row) +1,(pawnObj.col)-1]
+      diagonalRightPos = [(pawnObj.row) +1,(pawnObj.col)+1]
+    end
+
+      diagonalLeftPiece = retrievePieceObj(diagonalLeftPos)
+      diagonalRightPiece = retrievePieceObj(diagonalRightPos)
+      
+      arr << diagonalLeftPiece if diagonalLeftPiece && diagonalLeftPiece.color != pawnObj.color
+      arr << diagonalRightPiece if diagonalRightPiece && diagonalRightPiece.color != pawnObj.color
+
+    arr
+  end
+  
+
 end
 
 

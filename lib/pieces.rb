@@ -1,23 +1,99 @@
 module Pieces
   
-  def getMoves(pieceType,*args) 
+  def getMoves(currentBoard) 
     arr = []
-    #Pawn
-    case pieceType
-    when "pawn"
-      # p "it's a pawn"
-      # p pieceType
-      p args
-      # p moved
-      
-    else
-      # p "not a pawn"
-    end
-      # Advances forward
-      #If moved=false can advance two
-      #Edge cases
-      #Capture move if rival piece on next or previous column of the next row
+    # p "args"
+    # p args
 
+    #Pawn
+    case self.class.to_s
+    when "Pawn"
+      #white pawns move up and black pawn move down
+      
+      selfRow = self.row
+      selfCol = self.col
+
+      if self.color== 'white' then
+        forwardPos = [selfRow-1,selfCol]
+        if(currentBoard.retrievePieceObj((forwardPos)).nil?)then
+          arr << forwardPos
+          forwardPos = [forwardPos[0]-1,forwardPos[1]]
+          if(self.moved==false&&currentBoard.retrievePieceObj((forwardPos)).nil?)then
+            arr << forwardPos
+          end
+        end
+
+        # p "find diagonal of self"
+        currentBoard.findDiagonalPiecesofPawn(self)
+        .size.times do |index|
+          thisRow = currentBoard.findDiagonalPiecesofPawn(self)[index].row
+          thisCol = currentBoard.findDiagonalPiecesofPawn(self)[index].col
+          arr << [thisRow, thisCol]
+        end
+
+      else #Black Pawn
+        forwardPos = [selfRow+1,selfCol]
+        p currentBoard.retrievePieceObj((forwardPos)).nil?
+        if(currentBoard.retrievePieceObj((forwardPos)).nil?)then
+          arr << forwardPos
+          forwardPos = [forwardPos[0]+1,forwardPos[1]]
+          if(self.moved==false&&currentBoard.retrievePieceObj((forwardPos)).nil?)then
+            arr << forwardPos
+          end
+        end
+
+        # p "find diagonal of self"
+        currentBoard.findDiagonalPiecesofPawn(self)
+        .size.times do |index|
+          thisRow = currentBoard.findDiagonalPiecesofPawn(self)[index].row
+          thisCol = currentBoard.findDiagonalPiecesofPawn(self)[index].col
+          arr << [thisRow, thisCol]
+        end
+      end
+
+    when "Horse"
+      p "It's a horse"
+      p self
+      selfCol = self.col
+      selfRow = self.row
+      horseCombinations = [[2,1],[2,-1],[-2,1],[-2,-1],[-1,2],[1,2],[1,-2],[-1,-2]]
+      
+      horseCombinations.each_with_index do |combination,index|
+        checkRow = selfRow + combination[0]
+        checkCol = selfCol + combination[1]
+        if(currentBoard.isInsideOfBoard(checkCol,checkRow))then
+          if currentBoard.retrievePieceObj([checkRow,checkCol]).nil? then
+            p "Empty square"
+            arr << [checkRow,checkCol]
+          else
+            if !(self.color == currentBoard.retrievePieceObj([checkRow,checkCol]).color)then
+              arr << [checkRow,checkCol]
+            end
+          end
+
+        end
+
+        
+
+
+
+        # p "Inside?"
+      # p(currentBoard.isInsideOfBoard(selfRow-2,selfCol+1))
+      # p "exist obj and different color?"
+      # p (currentBoard.retrievePieceObj([selfRow-2,selfCol+1]).nil? )
+      # &&
+        # currentBoard.retrievePieceObj([selfRow-2,selfCol+1]).color != self.color)
+      # p (currentBoard.retrievePieceObj([selfRow+2,selfCol+1]).color != self.color)
+
+      
+
+      end
+      
+
+    else
+      p "not a pawn"
+    end
+    
     #Rook
       # Horizontal positive until there's a piece
 
@@ -26,15 +102,7 @@ module Pieces
       # Vertical positive
 
       # Vertical negative
-    #Horse
-      #+2 +1
-      #+2 -1
-      #-2 +1
-      #-2 -1
-      #-1 +2
-      #+1 +2
-      #+1 -2
-      #-1  -2
+
     #Bishop
       #Diagonal right up  until a piece
       #Diagonal right down until a piece
@@ -47,7 +115,8 @@ module Pieces
       #Check which pieces can move to any of his influence
       # Moves 1 square any direction
     
-
+      p "This piece can move to the following squares: "
+      p arr
       arr
   end
 end
@@ -63,8 +132,9 @@ end
       @color = color
       @moved = moved
       @isKing=false
-      @allowedMoves = getMoves("pawn",@color,@moved)
+      @allowedMoves = []
     end
+
   end
 
   class Rook
@@ -78,7 +148,7 @@ end
       @moved = moved
       @isKing=false
       color=="white"? @pieceStr = '♜': @pieceStr = '♖'
-      @allowedMoves = getMoves("rook")
+      # @allowedMoves = getMoves("rook")
     end
 
   end
@@ -93,7 +163,7 @@ end
       @color = color
       @isKing=false
       color=="white"? @pieceStr = '♞': @pieceStr = '♘'
-      @allowedMoves = getMoves("horse")
+      # @allowedMoves = getMoves("horse")
     end
   end
 
@@ -107,7 +177,7 @@ end
       @color = color
       @isKing=false
       color=="white"? @pieceStr = '♝': @pieceStr = '♗'
-      @allowedMoves = getMoves("bishop")
+      # @allowedMoves = getMoves("bishop")
     end
   end
 
@@ -121,7 +191,7 @@ class Queen
     @color = color
     @isKing=false
     color=="white"? @pieceStr = '♛': @pieceStr = '♕'
-    @allowedMoves = getMoves("queen")
+    # @allowedMoves = getMoves("queen")
   end
 end
 
@@ -136,7 +206,7 @@ class King
     @moved = moved
     @isKing=true
     color=="white"? @pieceStr = '♚': @pieceStr = '♔'
-    @allowedMoves = getMoves("king")
+    # @allowedMoves = getMoves("king")
   end
 
 end

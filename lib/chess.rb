@@ -1,5 +1,6 @@
-require_relative './pieces'
 require_relative './board'
+require_relative './pieces'
+
 class Game
   attr_reader :board, :player1, :player2
   def initialize
@@ -39,7 +40,20 @@ end
 
 newgame = Game.new
 newgame.board.drawBoard
-p newgame.board.currentPieces[0].getMoves("pawn")
+# p newgame.board.currentPieces[8]
+
+whiteHorse = newgame.board.currentPieces[26]
+p whiteHorse
+
+whiteHorse.getMoves(newgame.board)
+
+
+
+# firstPawn.getMoves(newgame.board)
+# firstRook = newgame.board.currentPieces[8]
+# firstRook.class
+# p newgame.board.findDiagonalPiecesofPawn(firstPawn)
+# newgame.board.currentPieces[0].getMoves("white","false","col","row")
 # newgame.move([6,4],[5,4])
 # newgame.board.drawBoard
 # p newgame.board
