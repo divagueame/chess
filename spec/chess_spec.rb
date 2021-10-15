@@ -1,5 +1,31 @@
 require 'chess'
 
+describe Pieces do
+  before(:all) do
+    # let(:chessBoard) {Board.new}
+    # let currentPieces = Board.new.currentPieces
+    
+  end
+
+  
+  context "getMoves" do
+    it "returns the correct array of moves" do
+      "Current pieces are: "
+    p Board.new.currentPieces.size
+    end
+  end
+end
+
+describe Game do
+  let(:startingGame) {Game.new}
+  context 'When a new game starts' do
+    it 'it initializes a new board' do
+      # actual = startingGame
+      # expected = 
+      # expect(actual).to be(expected)
+    end
+  end
+end
 describe Board do
   let(:startingBoard) {Board.new}
   context "#emptySquare checks empty squares properly" do
@@ -47,7 +73,7 @@ describe Board do
       end
     end
 
-    context "#updateMoveOnBoard" do
+    context '#updateMoveOnBoard' do
       it 'advances pawn on the array @currentBoard' do
         origin = [0,6]
         target = [0,5]
@@ -60,13 +86,15 @@ describe Board do
           [0,0,0,0,0,0,0,0],                        #2  
           [0,0,0,0,0,0,0,0],                        #3
           [0,0,0,0,0,0,0,0],                        #4
-          ['♟',0,0,0,0,0,0,0],                        #5
-          [0,'♟','♟','♟','♟','♟','♟','♟'], #6
+          ['♟',0,0,0,0,0,0,0],                     #5
+          [0,'♟','♟','♟','♟','♟','♟','♟'],    #6
           ['♜','♞','♝','♛','♚','♝','♞','♜']  #7
           # 0    1    2    3    4    5    6   7
         ]
         expect(actual).to eq(updatedBoard)
       end
+    end   
     end
   end
-end
+  
+  
