@@ -91,10 +91,12 @@ class Board
     # p @currentBoard
     print "\n"
     @currentBoard.each_with_index do |row,rowNumber|
+      inverted = (row.length)-rowNumber
+      print "#{inverted}  "
       drawRow(row,rowNumber)
       print "\n"
     end
-    print "\n"
+    print "    a   b   c   d   e   f   g   h\n"
   end
 
   def emptySquare?(col,row)

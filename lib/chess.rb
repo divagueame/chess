@@ -13,8 +13,49 @@ class Game
   def promptMove
     p 'Please... Choose a piece to move...'
     origin = gets.chomp
+
+    p "user wrote #{origin}"
+    p "  "
+    p "this is just like: "
+    p decodeUserInputPos(origin)
   end
 
+  def decodeUserInputPos(userStr)
+    rows = {
+      8 => 0,
+      7 => 1,
+      6 => 2,
+      5 => 3,
+      4 => 4,
+      3 => 5,
+      2 => 6,
+      1 => 7
+    }
+
+    cols = {
+      'a' => 0,
+      'b' => 1,
+      'c' => 2,
+      'd' => 3,
+      'e' => 4,
+      'f' => 5,
+      'g' => 6,
+      'h' => 7
+    }
+    
+
+    arr = []
+    usersplitted =  userStr.split("")
+    thisRow = usersplitted[1].to_i
+    row = rows[thisRow]
+    thisCol = usersplitted[0]
+    col =  cols[thisCol]
+
+    arr << row
+    arr << col
+    
+    arr
+  end
 
   def move(origin,target)
     originObj = board.retrievePieceObj(origin)
@@ -46,7 +87,7 @@ end
 
 newgame = Game.new
 newgame.board.drawBoard
-# newgame.promptMove
+newgame.promptMove
 # p newgame.board.currentPieces[8]
 
 
