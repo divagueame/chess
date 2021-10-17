@@ -10,6 +10,12 @@ class Game
     @activePlayer = "white"
   end
 
+  def promptMove
+    p 'Please... Choose a piece to move...'
+    origin = gets.chomp
+  end
+
+
   def move(origin,target)
     originObj = board.retrievePieceObj(origin)
     return p "That's an empty square!" if originObj.nil?
@@ -40,15 +46,13 @@ end
 
 newgame = Game.new
 newgame.board.drawBoard
+# newgame.promptMove
 # p newgame.board.currentPieces[8]
 
-# whiteHorse = newgame.board.currentPieces[26]
-# p whiteHorse
-# whiteHorse.getMoves(newgame.board)
 
-whiteBishop =  newgame.board.currentPieces[13]
+# whiteBishop =  newgame.board.currentPieces[15]
 # p whiteBishop
-whiteBishop.getMoves(newgame.board)
+# whiteBishop.getMoves(newgame.board)
 
 # firstPawn.getMoves(newgame.board)
 # firstRook = newgame.board.currentPieces[8]

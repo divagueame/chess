@@ -2,9 +2,6 @@ module Pieces
   
   def getMoves(currentBoard) 
     arr = []
-    # p "args"
-    # p args
-
     #Pawn
     case self.class.to_s
     when "Pawn"
@@ -80,16 +77,14 @@ module Pieces
       selfCol = self.col
       selfRow = self.row
       # bishopCombinations = [1,1]
+
       # TOP RIGHT
-      # p "Current, ", [selfRow,selfCol]
       7.times do |i|
         # break if selfRow+i+1<0
         rowDirection = selfRow-i-1
         colDirection = selfCol+i+1
         break if rowDirection<0 || colDirection>7
-        p "Top right", [rowDirection,colDirection]
-        # p "Top right", [selfRow-i-1,selfCol+i+1]
-        # p currentBoard.retrievePieceObj([rowDirection,colDirection]).nil?
+        # p "Top right", [rowDirection,colDirection]
         if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
           arr << [rowDirection,colDirection]
         else
@@ -99,49 +94,304 @@ module Pieces
           end
           break
         end
-        #if empty, add to array and continue
-        #if not empty, check if same color and break. Add if opposite
-        
       end
+
       # TOP LEFT
       7.times do |i|
         # p "Top left", [selfRow-i-1,selfCol-i-1]
+        rowDirection = selfRow-i-1
+        colDirection = selfCol-i-1
+        break if rowDirection<0 || colDirection<0
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
       end
+
       # DOWN RIGHT
-      
       7.times do |i|
-        # p "Down right", [selfRow+i+1,selfCol+i+1]
+        rowDirection = selfRow+i+1
+        colDirection = selfCol+i+1
+        break if rowDirection>7 || colDirection>7
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
       end
+
       # DOWN LEFT
-      
       7.times do |i|
         # p "Down left", [selfRow+i+1,selfCol-i-1]
+        rowDirection = selfRow+i+1
+        colDirection = selfCol-i-1
+        break if rowDirection>7 || colDirection<0
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+
       end
+      p "This bishop can go to: "
+      p arr
+      return arr
+    
+    
+    when 'Rook'
+      p "It's a rook"
+      p self
+      selfCol = self.col
+      selfRow = self.row
+      # p selfCol, selfRow
+      # TOP
+      7.times do |i|  
+        rowDirection = selfRow-i-1
+        colDirection = selfCol
+        break if rowDirection<0 #|| colDirection>7
+        # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+
+      # DOWN
+      7.times do |i|  
+        rowDirection = selfRow+i+1
+        colDirection = selfCol
+        break if rowDirection>7 #|| colDirection>7
+        # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+
+      
+      # LEFT
+      7.times do |i|  
+        rowDirection = selfRow
+        colDirection = selfCol-i-1
+        break if colDirection<0
+        # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+
+      
+      # RIGHT
+      7.times do |i|  
+        rowDirection = selfRow
+        colDirection = selfCol+i+1
+        break if colDirection>7 #|| colDirection>7
+        # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+      
+      p arr
+      return arr
+    when 'Queen'
+      p "It's the queen"
+      p self
+      selfCol = self.col
+      selfRow = self.row
+            # TOP
+            7.times do |i|  
+              rowDirection = selfRow-i-1
+              colDirection = selfCol
+              break if rowDirection<0 #|| colDirection>7
+              # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+              if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+                arr << [rowDirection,colDirection]
+              else
+                
+                if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+                  arr << [rowDirection,colDirection]
+                end
+                break
+              end
+            end
+      
+            # DOWN
+            7.times do |i|  
+              rowDirection = selfRow+i+1
+              colDirection = selfCol
+              break if rowDirection>7 #|| colDirection>7
+              # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+              if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+                arr << [rowDirection,colDirection]
+              else
+                if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+                  arr << [rowDirection,colDirection]
+                end
+                break
+              end
+            end
+      
+            
+            # LEFT
+            7.times do |i|  
+              rowDirection = selfRow
+              colDirection = selfCol-i-1
+              break if colDirection<0
+              # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+              if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+                arr << [rowDirection,colDirection]
+              else
+                if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+                  arr << [rowDirection,colDirection]
+                end
+                break
+              end
+            end
+      
+            
+            # RIGHT
+            7.times do |i|  
+              rowDirection = selfRow
+              colDirection = selfCol+i+1
+              break if colDirection>7 #|| colDirection>7
+              # p currentBoard.retrievePieceObj([rowDirection,colDirection])
+              if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+                arr << [rowDirection,colDirection]
+              else
+                if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+                  arr << [rowDirection,colDirection]
+                end
+                break
+              end
+            end
+
+
+
+      # TOP RIGHT
+      7.times do |i|
+        # break if selfRow+i+1<0
+        rowDirection = selfRow-i-1
+        colDirection = selfCol+i+1
+        break if rowDirection<0 || colDirection>7
+        # p "Top right", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+
+      # TOP LEFT
+      7.times do |i|
+        # p "Top left", [selfRow-i-1,selfCol-i-1]
+        rowDirection = selfRow-i-1
+        colDirection = selfCol-i-1
+        break if rowDirection<0 || colDirection<0
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+
+      # DOWN RIGHT
+      7.times do |i|
+        rowDirection = selfRow+i+1
+        colDirection = selfCol+i+1
+        break if rowDirection>7 || colDirection>7
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+      end
+
+      # DOWN LEFT
+      7.times do |i|
+        # p "Down left", [selfRow+i+1,selfCol-i-1]
+        rowDirection = selfRow+i+1
+        colDirection = selfCol-i-1
+        break if rowDirection>7 || colDirection<0
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+          break
+        end
+
+      end
+      p "This Queen can go to: "
+      p arr
+      return arr
     else
-      p "not a pawn"
+      p "It's the king.. .hopefully"
+      p self
+      selfCol = self.col
+      selfRow = self.row
+      kingMoves = [[1,-1],[1,0],[1,1],[0,-1],[0,1],[-1,-1],[-1,0],[-1,1]]
+
+      kingMoves.each do |move|
+        rowDirection = selfRow+move[0]
+        colDirection = selfCol+move[1]
+        next if rowDirection>7 || colDirection<0|| rowDirection<0 || colDirection>7
+        # p "Top left", [rowDirection,colDirection]
+        if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
+          arr << [rowDirection,colDirection]
+        else
+          if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
+            arr << [rowDirection,colDirection]
+          end
+        end
+      end
     end
-    
-    #Rook
-      # Horizontal positive until there's a piece
-
-      # Horizontal negative
-
-      # Vertical positive
-
-      # Vertical negative
-
-    #Bishop
-      #Diagonal right up  until a piece
-      #Diagonal right down until a piece
-      #Diagonal left up until a piece
-      #Diagonal left down until a piece
-    #Queen
-      # Bishop+Rook moves
-    #King
-      #is checked
-      #Check which pieces can move to any of his influence
-      # Moves 1 square any direction
-    
       p "This piece can move to the following squares: "
       p arr
       arr

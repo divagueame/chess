@@ -5,13 +5,13 @@ class Board
   def initialize
       @currentPieces =[
         # White pieces
-        Pawn.new(3,0,"white"),
+        Pawn.new(6,0,"white"),
         Pawn.new(6,1,"white"),
         Pawn.new(6,2,"white"),
         Pawn.new(6,3,"white"),
-        Pawn.new(6,2,"white"),
+        Pawn.new(6,4,"white"),
         Pawn.new(6,5,"white"),
-        Pawn.new(6,2,"white"),
+        Pawn.new(6,6,"white"),
         Pawn.new(6,7,"white"),
         Rook.new(7,0,"white"),
         Rook.new(7,7,"white"),
