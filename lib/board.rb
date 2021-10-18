@@ -24,7 +24,7 @@ class Board
         
         # black pieces
         # Pawn.new(5,2,"black"),
-        Pawn.new(1,0,"black"),
+        Pawn.new(5,4,"black"),
         Pawn.new(1,1,"black"),
         Pawn.new(1,2,"black"),
         Pawn.new(1,3,"black"),
@@ -159,6 +159,12 @@ class Board
     arr
   end
   
+  def updatePieceObj()
+  end
+
+  def removePieceObj(pieceObj)
+    p currentPieces
+  end
 
 end
 

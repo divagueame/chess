@@ -11,13 +11,16 @@ class Game
   end
 
   def promptMove
-    p 'Please... Choose a piece to move...'
+    p 'Please... Choose a square...'
     origin = gets.chomp
-
-    p "user wrote #{origin}"
-    p "  "
-    p "this is just like: "
-    p decodeUserInputPos(origin)
+    originCols = "abcdefgh".split("")
+    originRows = "12345678".split("")
+    while !originCols.include?(origin[0]) || !originRows.include?(origin[1]) do
+      p "not a valid position! Choose a position like a2 or f7"
+      origin = gets.chomp
+    end
+    
+    decodeUserInputPos(origin)
   end
 
   def decodeUserInputPos(userStr)
@@ -57,22 +60,58 @@ class Game
     arr
   end
 
-  def move(origin,target)
-    originObj = board.retrievePieceObj(origin)
-    return p "That's an empty square!" if originObj.nil?
-    originPieceColor = originObj.color
-    return p "Wrong piece! That's not yours!" if originObj.color != @activePlayer
-    targetObj = board.retrievePieceObj(target)
-    return p "Wrong move! Your own piece is there!" if targetObj && targetObj.color == @activePlayer
 
-    # p originObj.class.name
-    # p originObj.getMoves
+  def move
+    board.drawBoard
+    origin = promptMove 
+    originObj = board.retrievePieceObj(origin)
+
+    while originObj.nil? do
+      p "That's an empty square! Try another square"
+      origin = promptMove 
+      originObj = board.retrievePieceObj(origin)
+    end
+
+    while  originObj.nil? || originObj.color != @activePlayer do
+      p "That's not your piece! Try again"
+      origin = promptMove 
+      originObj = board.retrievePieceObj(origin)
+    end
+    
+    p " Origin is : "
+    p origin
+    originMoves = originObj.getMoves(board)
+    
+    target = promptMove 
+    while !originMoves.include?(target) do
+      p "Not a valid move. Try again"
+      target = promptMove 
+    end
+
+    p "Good move"
+    p originObj
+    p originObj.row
+    p "Target it"
+    p target
+    originObj.row = target[0]
+    originObj.col = target[1]
+    p board.currentPieces
+    # board.drawBoard
+    # p originObj.row
+    # targetObj = board.retrievePieceObj(target)
     # p targetObj
 
-    #If it's an empty square or 
-    # if(targetObj.empty || !board.check?(targetObj))then  end
-    # return p "Check!" if board.check?(targetObj)
-    #if there's targetObj, delete from board.currentpieces
+    # if(board.currentPieces.include?(targetObj))then
+    #       # p board.removePieceObj(target)
+    #       p board.currentPieces.size
+    #       board.drawBoard
+    #       board.currentPieces.delete(targetObj)
+    #       p "There's  an opponne piece there"
+    #       board.drawBoard
+    #       p board.currentPieces.size
+
+    # end
+
   end
 
 end
@@ -86,8 +125,12 @@ end
 
 
 newgame = Game.new
-newgame.board.drawBoard
-newgame.promptMove
+# newgame.board.drawBoard
+
+# p "ANd the userchose: "
+newgame.move
+
+# newgame.board.drawBoard
 # p newgame.board.currentPieces[8]
 
 
