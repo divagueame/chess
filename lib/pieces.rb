@@ -30,7 +30,7 @@ module Pieces
 
       else #Black Pawn
         forwardPos = [selfRow+1,selfCol]
-        p currentBoard.retrievePieceObj((forwardPos)).nil?
+        # p currentBoard.retrievePieceObj((forwardPos)).nil?
         if(currentBoard.retrievePieceObj((forwardPos)).nil?)then
           arr << forwardPos
           forwardPos = [forwardPos[0]+1,forwardPos[1]]
@@ -49,8 +49,8 @@ module Pieces
       end
 
     when "Horse"
-      p "It's a horse"
-      p self
+      # p "It's a horse"
+      # p self
       selfCol = self.col
       selfRow = self.row
       horseCombinations = [[2,1],[2,-1],[-2,1],[-2,-1],[-1,2],[1,2],[1,-2],[-1,-2]]
@@ -60,7 +60,7 @@ module Pieces
         checkCol = selfCol + combination[1]
         if(currentBoard.isInsideOfBoard(checkCol,checkRow))then
           if currentBoard.retrievePieceObj([checkRow,checkCol]).nil? then
-            p "Empty square"
+            # p "Empty square"h3
             arr << [checkRow,checkCol]
           else
             if !(self.color == currentBoard.retrievePieceObj([checkRow,checkCol]).color)then
@@ -72,8 +72,8 @@ module Pieces
       
       
     when "Bishop"
-      p "It's a bishop"
-      p self
+      # p "It's a bishop"
+      # p self
       selfCol = self.col
       selfRow = self.row
       # bishopCombinations = [1,1]
@@ -146,14 +146,14 @@ module Pieces
         end
 
       end
-      p "This bishop can go to: "
-      p arr
+      # p "This bishop can go to: "
+      # p arr
       return arr
     
     
     when 'Rook'
-      p "It's a rook"
-      p self
+      # p "It's a rook"
+      # p self
       selfCol = self.col
       selfRow = self.row
       # p selfCol, selfRow
@@ -224,11 +224,11 @@ module Pieces
         end
       end
       
-      p arr
+      # p arr
       return arr
     when 'Queen'
-      p "It's the queen"
-      p self
+      # p "It's the queen"
+      # p self
       selfCol = self.col
       selfRow = self.row
             # TOP
@@ -368,12 +368,12 @@ module Pieces
         end
 
       end
-      p "This Queen can go to: "
-      p arr
+      # p "This Queen can go to: "
+      # p arr
       return arr
     else
-      p "It's the king.. .hopefully"
-      p self
+      # p "It's the king.. .hopefully"
+      # p self
       selfCol = self.col
       selfRow = self.row
       kingMoves = [[1,-1],[1,0],[1,1],[0,-1],[0,1],[-1,-1],[-1,0],[-1,1]]
@@ -392,8 +392,8 @@ module Pieces
         end
       end
     end
-      p "This piece can move to the following squares: "
-      p arr
+      # p "This piece can move to the following squares: "
+      # p arr
       arr
   end
 end

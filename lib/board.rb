@@ -9,7 +9,7 @@ class Board
         Pawn.new(6,1,"white"),
         Pawn.new(6,2,"white"),
         Pawn.new(6,3,"white"),
-        Pawn.new(6,4,"white"),
+        Pawn.new(5,4,"white"),
         Pawn.new(6,5,"white"),
         Pawn.new(6,6,"white"),
         Pawn.new(6,7,"white"),
@@ -24,7 +24,7 @@ class Board
         
         # black pieces
         # Pawn.new(5,2,"black"),
-        Pawn.new(5,4,"black"),
+        Pawn.new(1,0,"black"),
         Pawn.new(1,1,"black"),
         Pawn.new(1,2,"black"),
         Pawn.new(1,3,"black"),
@@ -34,9 +34,9 @@ class Board
         Pawn.new(1,7,"black"),
         Rook.new(0,0,"black"),
         Rook.new(0,7,"black"),
-        Horse.new(0,1,"black"),
+        Horse.new(5,3,"black"),
         Horse.new(0,6,"black"),
-        Bishop.new(0,2,"black"),
+        # Bishop.new(3,7,"black"),
         Bishop.new(0,5,"black"),
         Queen.new(0,3,"black"),
         King.new(0,4,"black")
@@ -88,9 +88,11 @@ class Board
   end
 
   def drawBoard
-    # p @currentBoard
+    refreshBoardArray = renderBoardArray
+    # p "And... refreshBoardArray"
+    # p refreshBoardArray
     print "\n"
-    @currentBoard.each_with_index do |row,rowNumber|
+    refreshBoardArray.each_with_index do |row,rowNumber|
       inverted = (row.length)-rowNumber
       print "#{inverted}  "
       drawRow(row,rowNumber)
@@ -133,10 +135,79 @@ class Board
     currentPiece[0]
   end
 
-  def check? targetObj
-    return false if !targetObj || !targetObj.isKing
-    true
+  def check?(activePlayer)
+    p "Is #{activePlayer} in check?"
+    check = false
+
+    # Find coordinates of the activePlayer king
+    thisKing = Object.new
+    currentPieces.each do |piece| 
+      thisKing = piece
+      if piece.color == activePlayer && piece.class.to_s == "King" then
+        thisKing = piece
+        break  
+      end
+    end
+    thisKingPos = []
+    thisKingPos << thisKing.row
+    thisKingPos << thisKing.col
+    
+    # allEnemyMoves
+    currentPieces.each_with_index do |pieceObj, i|
+      if(pieceObj.color != activePlayer) then
+        thisPieceMoves = pieceObj.getMoves(self)
+        if thisPieceMoves.include?(thisKingPos) then 
+          check = true
+          break 
+        end
+        # if thisPieceMoves.size>0 then p thisPieceMoves end
+      end
+      
+        # thisPieceMoves = pieceObj.getMoves(self)
+        # if thisPieceMoves.size>0 then
+        
+    end
+    check
   end
+
+
+  def checkmate?(activePlayer)
+    p "Is #{activePlayer} in checkmate?"
+    checkmate = false
+
+    # Find coordinates of the activePlayer king
+    thisKing = Object.new
+    currentPieces.each do |piece| 
+      thisKing = piece
+      if piece.color == activePlayer && piece.class.to_s == "King" then
+        thisKing = piece
+        break  
+      end
+    end
+    p "IN CHECKMATE"
+    # p thisKing
+    thisKingMoves = thisKing.getMoves(self)
+    # p thisKingMoves
+    thisKingPos = []
+    thisKingPos << thisKing.row
+    thisKingPos << thisKing.col
+    
+    # allEnemyMoves
+    allEnemyMoves = []
+    currentPieces.each_with_index do |pieceObj, i|
+      if(pieceObj.color != activePlayer) then
+        thisPieceMoves = pieceObj.getMoves(self)
+        allEnemyMoves << thisPieceMoves
+      end
+    end
+    p (thisKingMoves - allEnemyMoves.flatten(1)).size == 0
+
+
+    # Own piece can free the king?
+    checkmate
+  end
+
+
 
   def findDiagonalPiecesofPawn(pawnObj)
     arr = []

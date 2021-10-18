@@ -60,6 +60,24 @@ class Game
     arr
   end
 
+  def next_turn
+    p "It's #{@activePlayer}'s player turn"
+    board.drawBoard
+    if(board.check?(@activePlayer))then
+      p "Check!"
+      if(board.checkmate?(@activePlayer))then
+        p "Checkmate! You lost!"
+      end
+
+    else
+      move
+    end
+
+    
+    
+    @activePlayer == "white"? @activePlayer = "black" : @activePlayer = "white"
+    
+  end
 
   def move
     board.drawBoard
@@ -78,8 +96,11 @@ class Game
       originObj = board.retrievePieceObj(origin)
     end
     
-    p " Origin is : "
-    p origin
+    while (originObj.getMoves(board).size<1) do
+      p "That piece can't move!"
+      origin = promptMove 
+      originObj = board.retrievePieceObj(origin)
+    end
     originMoves = originObj.getMoves(board)
     
     target = promptMove 
@@ -88,30 +109,15 @@ class Game
       target = promptMove 
     end
 
-    p "Good move"
-    p originObj
-    p originObj.row
-    p "Target it"
-    p target
+    targetObj = board.retrievePieceObj(target)
+    if(board.currentPieces.include?(targetObj))then
+          board.currentPieces.delete(targetObj)
+    end
+
     originObj.row = target[0]
     originObj.col = target[1]
-    p board.currentPieces
+
     # board.drawBoard
-    # p originObj.row
-    # targetObj = board.retrievePieceObj(target)
-    # p targetObj
-
-    # if(board.currentPieces.include?(targetObj))then
-    #       # p board.removePieceObj(target)
-    #       p board.currentPieces.size
-    #       board.drawBoard
-    #       board.currentPieces.delete(targetObj)
-    #       p "There's  an opponne piece there"
-    #       board.drawBoard
-    #       p board.currentPieces.size
-
-    # end
-
   end
 
 end
@@ -125,10 +131,11 @@ end
 
 
 newgame = Game.new
+newgame.next_turn
 # newgame.board.drawBoard
 
 # p "ANd the userchose: "
-newgame.move
+# newgame.move
 
 # newgame.board.drawBoard
 # p newgame.board.currentPieces[8]
