@@ -170,27 +170,14 @@ class Board
     check
   end
 
-
   def checkmate?(activePlayer)
     p "Is #{activePlayer} in checkmate?"
     checkmate = false
 
     # Find coordinates of the activePlayer king
-    thisKing = Object.new
-    currentPieces.each do |piece| 
-      thisKing = piece
-      if piece.color == activePlayer && piece.class.to_s == "King" then
-        thisKing = piece
-        break  
-      end
-    end
-    p "IN CHECKMATE"
-    # p thisKing
+    thisKing = currentPieces.select {|piece| piece.color == activePlayer && piece.class.to_s == "King" }[0]
     thisKingMoves = thisKing.getMoves(self)
-    # p thisKingMoves
-    thisKingPos = []
-    thisKingPos << thisKing.row
-    thisKingPos << thisKing.col
+    thisKingPos = [thisKing.row,thisKing.col]
     
     # allEnemyMoves
     allEnemyMoves = []
@@ -200,10 +187,17 @@ class Board
         allEnemyMoves << thisPieceMoves
       end
     end
-    p (thisKingMoves - allEnemyMoves.flatten(1)).size == 0
+  
+    return false if (thisKingMoves - allEnemyMoves.flatten(1)).size.positive? #The king can move out of the way, so no checkmate
+
+    # Own piece can free the king? 
+      #Eating the checking opposite piece
+      #Blocking the path of the checking opposite piece if it's a rook, bishop or queen
+    # If so, check that it doesn't make the king checked by other piece
 
 
-    # Own piece can free the king?
+    
+    p "checkmate"
     checkmate
   end
 
@@ -239,15 +233,3 @@ class Board
 
 end
 
-
-      # @currentBoard = [
-      #   ['♖','♘','♗','♕','♔','♗','♘','♖'], #0
-      #   ['♙','♙','♙','♙','♙','♙','♙','♙'], #1
-      #   [0,0,0,0,0,0,0,0],                        #2  
-      #   [0,0,0,0,0,0,0,0],                        #3
-      #   [0,0,0,0,0,0,0,0],                        #4
-      #   [0,0,0,0,0,0,0,0],                        #5
-      #   ['♟','♟','♟','♟','♟','♟','♟','♟'], #6
-      #   ['♜','♞','♝','♛','♚','♝','♞','♜']  #7
-      #   # 0    1    2    3    4    5    6   7
-      # ]
