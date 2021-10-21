@@ -66,11 +66,12 @@ class Game
     if(board.check?(@activePlayer))then
       p "Check!"
       if(board.checkmate?(@activePlayer))then
-        p "Checkmate! You lost!"
+        # p "Checkmate! You lost!"
       end
-
+      
     else
-      move
+      p "Not check"
+      # move
     end
 
     
@@ -78,6 +79,7 @@ class Game
     @activePlayer == "white"? @activePlayer = "black" : @activePlayer = "white"
     
   end
+  
 
   def move
     board.drawBoard
@@ -114,14 +116,12 @@ class Game
           board.currentPieces.delete(targetObj)
     end
 
-    originObj.row = target[0]
-    originObj.col = target[1]
-
-    # board.drawBoard
+    
   end
 
-end
 
+end
+  
 class Player
   def initialize(colorPlayer = 'white', humanPlayer = true)
     @colorPlayer = colorPlayer
@@ -131,28 +131,7 @@ end
 
 
 newgame = Game.new
+# newgame.board.drawBoard
+
 newgame.next_turn
 # newgame.board.drawBoard
-
-# p "ANd the userchose: "
-# newgame.move
-
-# newgame.board.drawBoard
-# p newgame.board.currentPieces[8]
-
-
-# whiteBishop =  newgame.board.currentPieces[15]
-# p whiteBishop
-# whiteBishop.getMoves(newgame.board)
-
-# firstPawn.getMoves(newgame.board)
-# firstRook = newgame.board.currentPieces[8]
-# firstRook.class
-# p newgame.board.findDiagonalPiecesofPawn(firstPawn)
-# newgame.board.currentPieces[0].getMoves("white","false","col","row")
-# newgame.move([6,4],[5,4])
-# newgame.board.drawBoard
-# p newgame.board
-# player1.move([0, 2], [0, 3])
-# game.drawBoard
-# p game.piecesRoot

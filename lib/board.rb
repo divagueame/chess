@@ -1,49 +1,47 @@
-
 class Board
   attr_accessor :currentBoard, :currentPieces
-  
-  def initialize
-      @currentPieces =[
-        # White pieces
-        Pawn.new(6,0,"white"),
-        Pawn.new(6,1,"white"),
-        Pawn.new(6,2,"white"),
-        Pawn.new(6,3,"white"),
-        Pawn.new(5,4,"white"),
-        Pawn.new(6,5,"white"),
-        Pawn.new(6,6,"white"),
-        Pawn.new(6,7,"white"),
-        Rook.new(7,0,"white"),
-        Rook.new(7,7,"white"),
-        Horse.new(7,1,"white"),
-        Horse.new(7,6,"white"),
-        Bishop.new(7,2,"white"),
-        Bishop.new(7,5,"white"),
-        Queen.new(7,3,"white"),
-        King.new(7,4,"white"),
-        
-        # black pieces
-        # Pawn.new(5,2,"black"),
-        Pawn.new(1,0,"black"),
-        Pawn.new(1,1,"black"),
-        Pawn.new(1,2,"black"),
-        Pawn.new(1,3,"black"),
-        Pawn.new(1,4,"black"),
-        Pawn.new(1,5,"black"),
-        Pawn.new(1,6,"black"),
-        Pawn.new(1,7,"black"),
-        Rook.new(0,0,"black"),
-        Rook.new(0,7,"black"),
-        Horse.new(5,3,"black"),
-        Horse.new(0,6,"black"),
-        # Bishop.new(3,7,"black"),
-        Bishop.new(0,5,"black"),
-        Queen.new(0,3,"black"),
-        King.new(0,4,"black")
-      ]
 
+  def initialize (initPieces = [
+    # White pieces
+    Pawn.new(6,0,"white"),
+    Pawn.new(6,1,"white"),
+    Pawn.new(6,2,"white"),
+    Pawn.new(6,3,"white"),
+    Pawn.new(5,4,"white"),
+    Pawn.new(6,5,"white"),
+    Pawn.new(6,6,"white"),
+    Pawn.new(6,7,"white"),
+    Rook.new(7,0,"white"),
+    Rook.new(7,7,"white"),
+    Horse.new(7,1,"white"),
+    Horse.new(7,6,"white"),
+    Bishop.new(7,2,"white"),
+    Bishop.new(7,5,"white"),
+    Queen.new(7,3,"white"),
+    King.new(7,4,"white"),
+    
+    # black pieces
+    # Pawn.new(5,2,"black"),
+    Pawn.new(4,0,"black"),
+    Pawn.new(1,1,"black"),
+    Pawn.new(1,2,"black"),
+    Pawn.new(1,3,"black"),
+    Pawn.new(1,4,"black"),
+    Pawn.new(1,5,"black"),
+    Pawn.new(1,6,"black"),
+    Pawn.new(1,7,"black"),
+    Rook.new(0,0,"black"),
+    Rook.new(0,7,"black"),
+    Horse.new(5,3,"black"),
+    Horse.new(0,6,"black"),
+    # Bishop.new(3,7,"black"),
+    Bishop.new(0,5,"black"),
+    Queen.new(0,3,"black"),
+    King.new(0,4,"black")
+  ])
+      @currentPieces = initPieces
       @currentBoard = renderBoardArray
-    end
+  end
 
   def renderBoardArray
     currentBoardArray = [
@@ -135,74 +133,6 @@ class Board
     currentPiece[0]
   end
 
-  def check?(activePlayer)
-    p "Is #{activePlayer} in check?"
-    check = false
-
-    # Find coordinates of the activePlayer king
-    thisKing = Object.new
-    currentPieces.each do |piece| 
-      thisKing = piece
-      if piece.color == activePlayer && piece.class.to_s == "King" then
-        thisKing = piece
-        break  
-      end
-    end
-    thisKingPos = []
-    thisKingPos << thisKing.row
-    thisKingPos << thisKing.col
-    
-    # allEnemyMoves
-    currentPieces.each_with_index do |pieceObj, i|
-      if(pieceObj.color != activePlayer) then
-        thisPieceMoves = pieceObj.getMoves(self)
-        if thisPieceMoves.include?(thisKingPos) then 
-          check = true
-          break 
-        end
-        # if thisPieceMoves.size>0 then p thisPieceMoves end
-      end
-      
-        # thisPieceMoves = pieceObj.getMoves(self)
-        # if thisPieceMoves.size>0 then
-        
-    end
-    check
-  end
-
-  def checkmate?(activePlayer)
-    p "Is #{activePlayer} in checkmate?"
-    checkmate = false
-
-    # Find coordinates of the activePlayer king
-    thisKing = currentPieces.select {|piece| piece.color == activePlayer && piece.class.to_s == "King" }[0]
-    thisKingMoves = thisKing.getMoves(self)
-    thisKingPos = [thisKing.row,thisKing.col]
-    
-    # allEnemyMoves
-    allEnemyMoves = []
-    currentPieces.each_with_index do |pieceObj, i|
-      if(pieceObj.color != activePlayer) then
-        thisPieceMoves = pieceObj.getMoves(self)
-        allEnemyMoves << thisPieceMoves
-      end
-    end
-  
-    return false if (thisKingMoves - allEnemyMoves.flatten(1)).size.positive? #The king can move out of the way, so no checkmate
-
-    # Own piece can free the king? 
-      #Eating the checking opposite piece
-      #Blocking the path of the checking opposite piece if it's a rook, bishop or queen
-    # If so, check that it doesn't make the king checked by other piece
-
-
-    
-    p "checkmate"
-    checkmate
-  end
-
-
-
   def findDiagonalPiecesofPawn(pawnObj)
     arr = []
     return p "Not a pawn" if pawnObj.class.to_s != "Pawn"
@@ -224,12 +154,71 @@ class Board
     arr
   end
   
-  def updatePieceObj()
+  def check?(activePlayer)
+    p "Is #{activePlayer} in check?"
+    check = false
+
+    # Find coordinates of the activePlayer king
+    thisKing = currentPieces.select {|piece| piece.color == activePlayer && piece.class.to_s == "King" }[0]
+    thisKingPos = [thisKing.row,thisKing.col]
+
+    # allEnemyMoves
+    currentPieces.each_with_index do |pieceObj, i|
+      if(pieceObj.color != activePlayer) then
+        thisPieceMoves = pieceObj.getMoves(self)
+        if thisPieceMoves.include?(thisKingPos) then 
+          check = true
+          break 
+        end
+        # if thisPieceMoves.size>0 then p thisPieceMoves end
+      end
+      
+        # thisPieceMoves = pieceObj.getMoves(self)
+        # if thisPieceMoves.size>0 then
+        
+    end
+    check
   end
 
-  def removePieceObj(pieceObj)
-    p currentPieces
+  def checkmate?(activePlayer)
+    p "Is #{activePlayer} in checkmate?"
+    active_player_pieces = currentPieces.select {|piece| piece.color == activePlayer}
+    non_active_player_pieces = currentPieces - active_player_pieces
+    
+    active_player_moves = []
+    active_player_pieces.each do |piece|
+      
+      if !piece.getMoves(self).empty? then
+        # p piece
+        # p piece.getMoves(self)
+        piece.getMoves(self).size.times do |i|
+          thisTarget = piece.getMoves(self)[i]
+          # p piece
+          # p thisTarget
+    #       newPiecesArray = updatePiecesArray(@currentPieces,piece, thisTarget)
+        end
+      end
+    end 
+    # p active_player_moves
+  end
+  
+  
+  def updatePiecesArray(original_array,moving_piece,target)
+  
+    # arr = original_array.clone
+    #Remove target position piece
+    # if !(arr.select {|piece,i| piece.row == target[0] && piece.col == target[1]}).empty? then
+      # arr = arr.select {|piece| piece.row != target[0] && piece.col != target[1]}
+    # end
+
+    
+    # arr.map do |piece| 
+      # if piece.row == moving_piece.row && piece.col == moving_piece.col then
+        # piece.row = target[0]
+        # piece.col = target[1]
+      # end 
+      # piece
+    # end
   end
 
 end
-

@@ -240,7 +240,6 @@ module Pieces
               if currentBoard.retrievePieceObj([rowDirection,colDirection]).nil? then
                 arr << [rowDirection,colDirection]
               else
-                
                 if(self.color!= currentBoard.retrievePieceObj([rowDirection,colDirection]).color)then
                   arr << [rowDirection,colDirection]
                 end
