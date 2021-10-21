@@ -193,9 +193,11 @@ class Board
         # p piece.getMoves(self)
         piece.getMoves(self).size.times do |i|
           thisTarget = piece.getMoves(self)[i]
-          # p piece
-          # p thisTarget
-    #       newPiecesArray = updatePiecesArray(@currentPieces,piece, thisTarget)
+          newPiecesArray = updatePiecesArray(@currentPieces,piece, thisTarget)
+          
+          
+          p newPiecesArray
+          p "                        "  
         end
       end
     end 
@@ -204,21 +206,26 @@ class Board
   
   
   def updatePiecesArray(original_array,moving_piece,target)
-  
-    # arr = original_array.clone
-    #Remove target position piece
-    # if !(arr.select {|piece,i| piece.row == target[0] && piece.col == target[1]}).empty? then
-      # arr = arr.select {|piece| piece.row != target[0] && piece.col != target[1]}
-    # end
+    arr = original_array.clone
+    this_moving_piece = moving_piece.clone
 
+    #Remove target position piece if there's any
+    targetPiece = arr.select {|piece| piece.row == target[0] && piece.col == target[1]}
+    if !targetPiece.empty? && !targetPiece.nil? then
+      arr = arr - targetPiece
+    end
     
-    # arr.map do |piece| 
-      # if piece.row == moving_piece.row && piece.col == moving_piece.col then
-        # piece.row = target[0]
-        # piece.col = target[1]
-      # end 
-      # piece
-    # end
+    arr = arr.select do |piece|
+      if(piece.row!=moving_piece.row || piece.col!=moving_piece.col)then
+        piece
+      end
+    end
+
+    this_moving_piece.row = target[0]
+    this_moving_piece.col = target[1]
+    arr << this_moving_piece
+  
+    arr
   end
 
 end
