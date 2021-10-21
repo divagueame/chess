@@ -3,8 +3,8 @@ require_relative './pieces'
 
 class Game
   attr_reader :board, :player1, :player2
-  def initialize
-    @board = Board.new
+  def initialize (newBoard = Board.new)
+    @board = newBoard
     @player1 = Player.new('white', 'human')
     @player2 = Player.new('black', 'human')
     @activePlayer = "white"
@@ -66,11 +66,13 @@ class Game
     if(board.check?(@activePlayer))then
       p "Check!"
       if(board.checkmate?(@activePlayer))then
-        # p "Checkmate! You lost!"
+        p "Checkmate! You lost!"
+      else
+        p "Not checkmate"
       end
       
     else
-      p "Not check"
+      
       # move
     end
 
@@ -130,7 +132,49 @@ class Player
 end
 
 
-newgame = Game.new
+newSituation =
+[
+      # White pieces
+      Pawn.new(6,0,"white"),
+      Pawn.new(6,1,"white"),
+      Pawn.new(6,2,"white"),
+      Pawn.new(6,3,"white"),
+      Pawn.new(6,4,"white"),
+      Pawn.new(5,5,"white"),
+      Pawn.new(6,6,"white"),
+      # Pawn.new(6,7,"white"),
+      Rook.new(7,0,"white"),
+      Rook.new(7,7,"white"),
+      Horse.new(7,1,"white"),
+      Horse.new(7,6,"white"),
+      Bishop.new(7,2,"white"),
+      Bishop.new(7,5,"white"),
+      Queen.new(7,3,"white"),
+      King.new(7,4,"white"),
+      
+      # black pieces
+      Pawn.new(1,0,"black"),
+      Pawn.new(1,1,"black"),
+      Pawn.new(1,2,"black"),
+      Pawn.new(1,3,"black"),
+      Pawn.new(1,4,"black"),
+      Pawn.new(1,5,"black"),
+      Pawn.new(1,6,"black"),
+      Pawn.new(1,7,"black"),
+      Rook.new(0,0,"black"),
+      Rook.new(0,7,"black"),
+      Horse.new(0,1,"black"),
+      Horse.new(0,6,"black"),
+      Bishop.new(0,2,"black"),
+      
+      Bishop.new(0,5,"black"),
+      Queen.new(0,3,"black"),
+      King.new(0,4,"black"),
+      Bishop.new(5,6,"black"),
+]
+
+thisBoard = Board.new(newSituation)
+newgame = Game.new(thisBoard)
 # newgame.board.drawBoard
 
 newgame.next_turn

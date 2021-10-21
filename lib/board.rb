@@ -7,7 +7,7 @@ class Board
     Pawn.new(6,1,"white"),
     Pawn.new(6,2,"white"),
     Pawn.new(6,3,"white"),
-    Pawn.new(5,4,"white"),
+    Pawn.new(6,4,"white"),
     Pawn.new(6,5,"white"),
     Pawn.new(6,6,"white"),
     Pawn.new(6,7,"white"),
@@ -21,8 +21,7 @@ class Board
     King.new(7,4,"white"),
     
     # black pieces
-    # Pawn.new(5,2,"black"),
-    Pawn.new(4,0,"black"),
+    Pawn.new(1,0,"black"),
     Pawn.new(1,1,"black"),
     Pawn.new(1,2,"black"),
     Pawn.new(1,3,"black"),
@@ -32,9 +31,9 @@ class Board
     Pawn.new(1,7,"black"),
     Rook.new(0,0,"black"),
     Rook.new(0,7,"black"),
-    Horse.new(5,3,"black"),
+    Horse.new(0,1,"black"),
     Horse.new(0,6,"black"),
-    # Bishop.new(3,7,"black"),
+    Bishop.new(0,2,"black"),
     Bishop.new(0,5,"black"),
     Queen.new(0,3,"black"),
     King.new(0,4,"black")
@@ -155,7 +154,7 @@ class Board
   end
   
   def check?(activePlayer)
-    p "Is #{activePlayer} in check?"
+    # p "Is #{activePlayer} in check?"
     check = false
 
     # Find coordinates of the activePlayer king
@@ -181,7 +180,8 @@ class Board
   end
 
   def checkmate?(activePlayer)
-    p "Is #{activePlayer} in checkmate?"
+    checkmate = true
+    # p "Is #{activePlayer} in checkmate?"
     active_player_pieces = currentPieces.select {|piece| piece.color == activePlayer}
     non_active_player_pieces = currentPieces - active_player_pieces
     
@@ -189,19 +189,16 @@ class Board
     active_player_pieces.each do |piece|
       
       if !piece.getMoves(self).empty? then
-        # p piece
-        # p piece.getMoves(self)
         piece.getMoves(self).size.times do |i|
           thisTarget = piece.getMoves(self)[i]
           newPiecesArray = updatePiecesArray(@currentPieces,piece, thisTarget)
-          
-          
-          p newPiecesArray
-          p "                        "  
+          newBoard = Board.new(newPiecesArray)
+          if !newBoard.check?(activePlayer) then checkmate = false end
         end
       end
     end 
     # p active_player_moves
+    checkmate
   end
   
   
