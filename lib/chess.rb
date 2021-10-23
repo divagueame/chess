@@ -62,29 +62,33 @@ class Game
 
   def next_turn
     p "It's #{@activePlayer}'s player turn"
+    # p board.currentPieces
     board.drawBoard
     if(board.check?(@activePlayer))then
       p "Check!"
       if(board.checkmate?(@activePlayer))then
         p "Checkmate! You lost!"
+        return
       else
         p "Not checkmate"
+        move
       end
       
     else
       
-      # move
+      move
+
     end
 
     
     
     @activePlayer == "white"? @activePlayer = "black" : @activePlayer = "white"
-    
+    next_turn
   end
   
 
   def move
-    board.drawBoard
+    
     origin = promptMove 
     originObj = board.retrievePieceObj(origin)
 
@@ -106,21 +110,44 @@ class Game
       originObj = board.retrievePieceObj(origin)
     end
     originMoves = originObj.getMoves(board)
-    
+  
+    #Filter out moves that reveal a check board
+    originMoves.reject! do |target_position|
+      newBoardPieces = board.updatePiecesArray(board.currentPieces, originObj, target_position)
+      newBoard = Board.new(newBoardPieces)
+      newBoard.check?(@activePlayer)
+    end
+    p "After is: "
+    p originMoves
+    p !originMoves.length.positive? 
+      while !originMoves.length.positive? do
+        p "Try again... That piece can't move!"
+        origin = promptMove 
+        originObj = board.retrievePieceObj(origin)
+        originMoves = originObj.getMoves(board)
+      end
+      
+
+    p "Alright... Where is it going to?"
     target = promptMove 
     while !originMoves.include?(target) do
       p "Not a valid move. Try again"
       target = promptMove 
     end
 
-    targetObj = board.retrievePieceObj(target)
-    if(board.currentPieces.include?(targetObj))then
-          board.currentPieces.delete(targetObj)
-    end
-
+    # targetObj = board.retrievePieceObj(target)
+    # if(board.currentPieces.include?(targetObj))then
+    #       board.currentPieces.delete(targetObj)
+    # end
     
-  end
-
+    # p "Before..."
+    # p board.currentPieces
+    next_turn_board_pieces = board.updatePiecesArray(board.currentPieces,originObj,target)
+    board.currentPieces = next_turn_board_pieces
+    # p "After..."
+    # p board.currentPieces
+    
+end
 
 end
   
@@ -132,8 +159,7 @@ class Player
 end
 
 
-newSituation =
-[
+newSituation =[
       # White pieces
       Pawn.new(6,0,"white"),
       Pawn.new(6,1,"white"),
@@ -170,11 +196,12 @@ newSituation =
       Bishop.new(0,5,"black"),
       Queen.new(0,3,"black"),
       King.new(0,4,"black"),
-      Bishop.new(5,6,"black"),
+      Bishop.new(3,0,"black")
 ]
 
 thisBoard = Board.new(newSituation)
-newgame = Game.new(thisBoard)
+# newgame = Game.new(thisBoard)
+newgame = Game.new
 # newgame.board.drawBoard
 
 newgame.next_turn
