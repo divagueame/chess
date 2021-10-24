@@ -67,7 +67,7 @@ class Board
 
   def drawSquare(color, piece = 0)
     piece = ' ' if [0, '0'].include?(piece)
-    return "\u001b[46;1m #{piece}  \u001b[0m" if color == 'white'
+    return "\u001b[41;1m #{piece}  \u001b[0m" if color == 'white'
     return "\u001b[44;1m #{piece}  \u001b[0m" if color == 'black'
   end
 
@@ -87,8 +87,6 @@ class Board
 
   def drawBoard
     refreshBoardArray = renderBoardArray
-    # p "And... refreshBoardArray"
-    # p refreshBoardArray
     print "\n"
     refreshBoardArray.each_with_index do |row, rowNumber|
       inverted = row.length - rowNumber

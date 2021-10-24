@@ -15,7 +15,7 @@ module Pieces
         if(currentBoard.retrievePieceObj((forwardPos)).nil?)then
           arr << forwardPos
           forwardPos = [forwardPos[0]-1,forwardPos[1]]
-          if(self.moved==false&&currentBoard.retrievePieceObj((forwardPos)).nil?)then
+          if(self.moved==false&&currentBoard.retrievePieceObj((forwardPos)).nil?) then
             arr << forwardPos
           end
         end
@@ -401,8 +401,10 @@ end
     include Pieces
     attr_accessor :allowedMoves, :row, :col, :moved
     attr_reader :color, :pieceStr, :isKing
+    # const blackPiece = '♙'
     def initialize(row,col,color,moved = false)
-      color=="white"? @pieceStr = '♟': @pieceStr = '♙'
+      
+      color=="white"? @pieceStr = "♟": @pieceStr =  "\u001b[33m♙"
       @row = row
       @col = col
       @color = color
@@ -423,7 +425,7 @@ end
       @color = color
       @moved = moved
       @isKing=false
-      color=="white"? @pieceStr = '♜': @pieceStr = '♖'
+      color=="white"? @pieceStr = '♜': @pieceStr = "\u001b[33m♖"
       # @allowedMoves = getMoves("rook")
     end
 
@@ -438,7 +440,7 @@ end
       @col = col
       @color = color
       @isKing=false
-      color=="white"? @pieceStr = '♞': @pieceStr = '♘'
+      color=="white"? @pieceStr = '♞': @pieceStr = "\u001b[33m♘"
       @allowedMoves = []
     end
   end
@@ -452,7 +454,7 @@ end
       @col = col
       @color = color
       @isKing=false
-      color=="white"? @pieceStr = '♝': @pieceStr = '♗'
+      color=="white"? @pieceStr = '♝': @pieceStr = "\u001b[33m♗"
       @allowedMoves = []
     end
   end
@@ -466,7 +468,7 @@ class Queen
     @col = col
     @color = color
     @isKing=false
-    color=="white"? @pieceStr = '♛': @pieceStr = '♕'
+    color=="white"? @pieceStr = '♛': @pieceStr = "\u001b[33m♕"
     # @allowedMoves = getMoves("queen")
   end
 end
@@ -481,7 +483,7 @@ class King
     @color = color
     @moved = moved
     @isKing=true
-    color=="white"? @pieceStr = '♚': @pieceStr = '♔'
+    color=="white"? @pieceStr = '♚': @pieceStr = "\u001b[33m♔"
     # @allowedMoves = getMoves("king")
   end
 

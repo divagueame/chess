@@ -70,25 +70,19 @@ class Game
         p "Checkmate! You lost!"
         return
       else
-        p "Not checkmate"
+        # p "Not checkmate"
         move
       end
       
     else
-      
       move
-
-    end
-
-    
+    end    
     
     @activePlayer == "white"? @activePlayer = "black" : @activePlayer = "white"
     next_turn
   end
-  
 
   def move
-    
     origin = promptMove 
     originObj = board.retrievePieceObj(origin)
 
@@ -117,16 +111,15 @@ class Game
       newBoard = Board.new(newBoardPieces)
       newBoard.check?(@activePlayer)
     end
-    p "After is: "
-    p originMoves
-    p !originMoves.length.positive? 
+    # p "After is: "
+    # p originMoves
+    # p !originMoves.length.positive? 
       while !originMoves.length.positive? do
         p "Try again... That piece can't move!"
         origin = promptMove 
         originObj = board.retrievePieceObj(origin)
         originMoves = originObj.getMoves(board)
       end
-      
 
     p "Alright... Where is it going to?"
     target = promptMove 
@@ -140,12 +133,8 @@ class Game
     #       board.currentPieces.delete(targetObj)
     # end
     
-    # p "Before..."
-    # p board.currentPieces
     next_turn_board_pieces = board.updatePiecesArray(board.currentPieces,originObj,target)
     board.currentPieces = next_turn_board_pieces
-    # p "After..."
-    # p board.currentPieces
     
 end
 
