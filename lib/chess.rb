@@ -5,8 +5,8 @@ class Game
   attr_reader :board, :player1, :player2
   def initialize (newBoard = Board.new)
     @board = newBoard
-    @player1 = Player.new('white', 'human')
-    @player2 = Player.new('black', 'human')
+    @player1 = Player.new('white', true)
+    @player2 = Player.new('black', true)
     @activePlayer = "white"
   end
 
@@ -60,6 +60,51 @@ class Game
     arr
   end
 
+  def init_menu 
+    print "\n"
+    print "Welcome! Please select one of the following:\n\n"
+    print "1) Start a new game against the computer. \n"
+    print "2) Start a new game against another human player\n"
+    user_answer = gets.chomp
+
+      while(user_answer.to_i != 1 && user_answer.to_i != 2)
+        print "Sorry. That's not right. Try again.\n"
+        user_answer = gets.chomp
+      end
+    
+      if user_answer.to_i == 1 then   
+        print "\n"
+        print "Would you like to play as (1) white or (2) black?\n"
+        user_color = gets.chomp
+        while(user_color.to_i != 1 && user_color.to_i != 2)
+          print "Sorry. That's not right. Try again.\n"
+          user_color = gets.chomp
+        end
+
+        if (user_color.to_i == 1) then
+          @player2.humanPlayer = false
+        else
+          @player1.humanPlayer = false
+        end
+
+        start_ai_game
+      else
+        start_human_game
+      end
+  end
+
+  def start_ai_game
+    print "AI Game initiated"
+    next_turn
+  end
+  
+  def start_human_game
+    print "Human game initiated"
+    next_turn
+  end
+
+  
+
   def next_turn
     p "It's #{@activePlayer}'s player turn"
     # p board.currentPieces
@@ -75,14 +120,25 @@ class Game
       end
       
     else
-      move
+
+      if then
+        move
+      else
+        move_ai
+      end
+      
     end    
     
     @activePlayer == "white"? @activePlayer = "black" : @activePlayer = "white"
     next_turn
   end
 
+  def move_ai
+    p "AI player move: "
+  end
+
   def move
+    p "Human player move: "
     origin = promptMove 
     originObj = board.retrievePieceObj(origin)
 
@@ -141,6 +197,7 @@ end
 end
   
 class Player
+  attr_accessor :colorPlayer, :humanPlayer
   def initialize(colorPlayer = 'white', humanPlayer = true)
     @colorPlayer = colorPlayer
     @humanPlayer = humanPlayer
@@ -188,10 +245,10 @@ newSituation =[
       Bishop.new(3,0,"black")
 ]
 
-thisBoard = Board.new(newSituation)
+# thisBoard = Board.new(newSituation)
 # newgame = Game.new(thisBoard)
 newgame = Game.new
-# newgame.board.drawBoard
-
-newgame.next_turn
+newgame.init_menu
+# newgame.board.getMoves
+# newgame.next_turn
 # newgame.board.drawBoard
